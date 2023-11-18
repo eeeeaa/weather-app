@@ -12,3 +12,38 @@ body {
 body {
   background-color: black;
 }
+
+#main-content {
+  height: 100vh;
+  display: grid;
+  grid-template: 1fr 2fr / 1fr;
+}
+
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+}
+
+.content {
+  display: grid;
+  grid-template: 2fr 1fr / 1fr;
+  gap: 1em;
+  padding: 1em;
+}
+
+.content .forecast-content {
+  display: grid;
+  gap: 1em;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.content .forecast-content .current-day-content {
+  padding: 1em;
+}
+
+.content .forecast-content .forecast-card {
+  height: 300px;
+  padding: 1em;
+}
