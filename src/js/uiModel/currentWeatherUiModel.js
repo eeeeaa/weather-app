@@ -1,5 +1,5 @@
-class currentWeatherUiModel {
-  constructor(
+export class CurrentWeatherUiModel {
+  constructor({
     iconUrl,
     weatherText,
     tempCelcius,
@@ -8,8 +8,8 @@ class currentWeatherUiModel {
     humidity,
     windSpeedKph,
     date,
-    location
-  ) {
+    location,
+  }) {
     this.iconUrl = iconUrl;
     this.weatherText = weatherText;
     this.tempCelcius = tempCelcius;

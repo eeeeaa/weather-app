@@ -1,4 +1,4 @@
 import "../css/style.css";
-import { fetchForecast } from "./fetcher/weatherApiFetcher";
+import { fetchAndMapData } from "./mapper/weatherUiMapper";
 
-fetchForecast("London");
+fetchAndMapData("Bangkok");

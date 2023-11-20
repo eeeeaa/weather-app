@@ -39,11 +39,14 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
-.content .forecast-content .current-day-content {
+.content .current-day-content,
+.content .forecast-content .forecast-card {
   padding: 1em;
+  display: flex;
+  gap: 1em;
+  justify-content: space-between;
 }
 
 .content .forecast-content .forecast-card {
   height: 300px;
-  padding: 1em;
 }
