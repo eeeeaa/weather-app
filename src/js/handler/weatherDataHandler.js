@@ -27,15 +27,31 @@ function handleForecastData(jsonData) {
   let uiModels = [];
 
   for (const forecast of forecastList) {
+    const tempHours = getTempHours(forecast.hour);
     uiModels.push(
       new ForecastCardUiModel({
         iconUrl: forecast.day.condition.icon,
         weatherText: forecast.day.condition.text,
         avgTempCelcius: forecast.day.avgtemp_c,
         avgTempFahrenheit: forecast.day.avgtemp_f,
+        date: forecast.date,
+        tempHours: tempHours,
       })
     );
   }
 
   return uiModels;
+}
+
+function getTempHours(hours) {
+  const result = [];
+  for (const hour of hours) {
+    const temp = hour.temp_c;
+    const time = hour.time.split(" ")[1];
+    result.push({
+      temp,
+      time,
+    });
+  }
+  return result;
 }

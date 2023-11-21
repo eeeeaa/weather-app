@@ -14,6 +14,6 @@ export async function fetchForecast(cityName) {
     throw new Error(json.error.message);
   }
 
-  console.log(response);
+  console.log(json);
   return json;
 }

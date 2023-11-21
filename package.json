@@ -26,5 +26,8 @@
     "presets": [
       "@babel/preset-env"
     ]
+  },
+  "dependencies": {
+    "chart.js": "^4.4.0"
   }
 }
