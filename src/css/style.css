@@ -125,7 +125,6 @@ body {
 }
 
 .content .current-day-content {
-  font-size: large;
   max-height: 400px;
   .left-content {
     display: flex;
@@ -137,13 +136,36 @@ body {
       width: 128px;
       height: 128px;
     }
+    .weather-text {
+      font-size: medium;
+      font-weight: 700;
+    }
   }
   .right-content {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template: 1fr 1fr / 1fr 1fr 1fr;
     gap: 1em;
-    justify-content: center;
     align-items: center;
+    justify-items: center;
+
+    .data-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1em;
+      gap: 1em;
+
+      .data-card-value {
+        font-size: x-large;
+        font-weight: 600;
+        text-align: center;
+      }
+      .data-card-label {
+        font-size: small;
+        font-weight: 300;
+        text-align: center;
+      }
+    }
   }
 }
 .content .forecast-content .forecast-card {

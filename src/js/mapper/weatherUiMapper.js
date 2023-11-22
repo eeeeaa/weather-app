@@ -102,29 +102,79 @@ function handleSearch() {
  */
 function currentWeatherUiModelMapper(currentWeatherUiModel) {
   const location = document.querySelector(".search-location");
+  location.textContent = `Current location: ${currentWeatherUiModel.location}`;
 
   const iconImg = document.querySelector(".current-day-content .weather-icon");
-  const text = document.querySelector(".current-day-content .weather-text");
-  const tempCelcius = document.querySelector(
-    ".current-day-content .temp-celcius"
-  );
-  const tempFahrenheit = document.querySelector(
-    ".current-day-content .temp-fahrenheit"
-  );
-  const cloud = document.querySelector(".current-day-content .cloud-density");
-  const humidity = document.querySelector(".current-day-content .humidity");
-  const windSpeed = document.querySelector(".current-day-content .wind-speed");
-  const date = document.querySelector(".current-day-content .date");
-
-  location.textContent = `Current location: ${currentWeatherUiModel.location}`;
   iconImg.src = currentWeatherUiModel.iconUrl;
+
+  const text = document.querySelector(".current-day-content .weather-text");
   text.textContent = currentWeatherUiModel.weatherText;
-  tempCelcius.textContent = `Temperature(C): ${currentWeatherUiModel.getCelciusText()}`;
-  tempFahrenheit.textContent = `Temperature(F): ${currentWeatherUiModel.getFahrenheitText()}`;
-  cloud.textContent = `Cloud density(percent): ${currentWeatherUiModel.getCloudText()}`;
-  humidity.textContent = `Humidity(percent): ${currentWeatherUiModel.getHumidityText()}`;
-  windSpeed.textContent = `Wind Speed (Kilometer/Hour): ${currentWeatherUiModel.getWindSpeedText()}`;
-  date.textContent = currentWeatherUiModel.date;
+
+  currentWeatherUiModelRightContentMapper(currentWeatherUiModel);
+}
+
+function currentWeatherUiModelRightContentMapper(currentWeatherUiModel) {
+  const rightContainer = document.querySelector(
+    ".current-day-content .right-content"
+  );
+
+  const tempCelCard = createDataCard(
+    currentWeatherUiModel.getCelciusText(),
+    "Temperature(C)",
+    "temp-celcius"
+  );
+  const tempFahCard = createDataCard(
+    currentWeatherUiModel.getFahrenheitText(),
+    "Temperature(F)",
+    "temp-fahrenheit"
+  );
+  const cloudCard = createDataCard(
+    currentWeatherUiModel.getCloudText(),
+    "Cloud density",
+    "cloud-density"
+  );
+  const humidCard = createDataCard(
+    currentWeatherUiModel.getHumidityText(),
+    "Humidity",
+    "humidity"
+  );
+  const windSpeedCard = createDataCard(
+    currentWeatherUiModel.getWindSpeedText(),
+    "Wind Speed (Kilometer/Hour)",
+    "wind-speed"
+  );
+
+  const dateCard = createDataCard(
+    currentWeatherUiModel.time,
+    currentWeatherUiModel.getDateText(),
+    "current-time"
+  );
+
+  rightContainer.append(
+    tempCelCard,
+    tempFahCard,
+    cloudCard,
+    humidCard,
+    windSpeedCard,
+    dateCard
+  );
+}
+
+function createDataCard(dataValue, dataLabel, dataClass) {
+  const container = document.createElement("div");
+  container.classList.toggle("data-card");
+  container.classList.toggle(dataClass);
+
+  const value = document.createElement("div");
+  value.classList.toggle("data-card-value");
+  value.textContent = dataValue;
+
+  const label = document.createElement("div");
+  label.classList.toggle("data-card-label");
+  label.textContent = dataLabel;
+
+  container.append(value, label);
+  return container;
 }
 
 /**

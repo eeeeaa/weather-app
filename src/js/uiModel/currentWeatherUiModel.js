@@ -8,6 +8,7 @@ export class CurrentWeatherUiModel {
     humidity,
     windSpeedKph,
     date,
+    time,
     location,
   }) {
     this.iconUrl = iconUrl;
@@ -18,6 +19,7 @@ export class CurrentWeatherUiModel {
     this.humidity = humidity;
     this.windSpeedKph = windSpeedKph;
     this.date = date;
+    this.time = time;
     this.location = location;
   }
 
@@ -30,4 +32,15 @@ export class CurrentWeatherUiModel {
   getHumidityText = () => `${this.humidity} %`;
 
   getWindSpeedText = () => `${this.windSpeedKph} KPH`;
+
+  getDateText = () => {
+    const newDate = new Date(this.date).toLocaleString("default", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
+    return newDate;
+  };
 }

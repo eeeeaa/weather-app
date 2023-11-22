@@ -17,7 +17,8 @@ function handleCurrentWeatherData(jsonData) {
     cloudDensity: jsonData.current.cloud,
     humidity: jsonData.current.humidity,
     windSpeedKph: jsonData.current.wind_kph,
-    date: handleCurrentDate(jsonData.current.last_updated),
+    date: handleCurrentDate(jsonData.current.last_updated).mainDate,
+    time: handleCurrentDate(jsonData.current.last_updated).time,
     location: jsonData.location.region,
   });
 }
@@ -46,15 +47,10 @@ function handleForecastData(jsonData) {
 function handleCurrentDate(date) {
   const mainDate = date.split(" ")[0];
   const time = date.split(" ")[1];
-
-  const newDate = new Date(mainDate).toLocaleString("default", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
-  return `Date: ${newDate}, time: ${time}`;
+  return {
+    mainDate,
+    time,
+  };
 }
 
 function handleForecastDate(date) {
