@@ -17,7 +17,7 @@ function handleCurrentWeatherData(jsonData) {
     cloudDensity: jsonData.current.cloud,
     humidity: jsonData.current.humidity,
     windSpeedKph: jsonData.current.wind_kph,
-    date: jsonData.current.last_updated,
+    date: handleCurrentDate(jsonData.current.last_updated),
     location: jsonData.location.region,
   });
 }
@@ -34,13 +34,37 @@ function handleForecastData(jsonData) {
         weatherText: forecast.day.condition.text,
         avgTempCelcius: forecast.day.avgtemp_c,
         avgTempFahrenheit: forecast.day.avgtemp_f,
-        date: forecast.date,
+        date: handleForecastDate(forecast.date),
         tempHours: tempHours,
       })
     );
   }
 
   return uiModels;
+}
+
+function handleCurrentDate(date) {
+  const mainDate = date.split(" ")[0];
+  const time = date.split(" ")[1];
+
+  const newDate = new Date(mainDate).toLocaleString("default", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  return `Date: ${newDate}, time: ${time}`;
+}
+
+function handleForecastDate(date) {
+  const newDate = new Date(date).toLocaleString("default", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  return `Date: ${newDate}`;
 }
 
 function getTempHours(hours) {

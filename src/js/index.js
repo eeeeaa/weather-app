@@ -1,4 +1,4 @@
 import "../css/style.css";
-import { fetchAndMapData } from "./mapper/weatherUiMapper";
+import { initialize } from "./mapper/weatherUiMapper";
 
-fetchAndMapData("Bangkok");
+initialize("Bangkok");

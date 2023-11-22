@@ -1,5 +1,6 @@
+@import url("https://fonts.googleapis.com/css?family=Merriweather");
 * {
-  font-family: "Times New Roman", Times, serif;
+  font-family: "Merriweather", "Times New Roman", Times, serif;
   color: white;
 }
 
@@ -17,6 +18,26 @@ body {
   background-size: cover;
 }
 
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #fff;
+  border-bottom-color: #0f766e;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 #main-content {
   height: 100vh;
   display: grid;
@@ -26,20 +47,60 @@ body {
 
 .nav-bar {
   max-height: 10%;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template: 1fr/2fr 1fr;
   align-items: center;
-  padding: 2em;
+  padding: 3em;
+  gap: 1em;
   background-color: #0284c780;
   border-radius: 0 0 1em 1em;
+}
+
+.nav-bar .search-bar {
+  justify-self: flex-start;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
+#city-name-search {
+  appearance: none;
+  background-color: #082f49;
+  border-color: transparent;
+  border-radius: 1em;
+  padding: 0.5em 0.2em;
+  width: 300px;
+}
+
+.nav-bar .search-bar .search-icon {
+  width: 24px;
+  height: 24px;
+  content: url("../assets/ic_search.svg");
+}
+
+.nav-bar .search-bar .search-icon:hover {
+  transition: all 0.1s ease;
+  transform: scale(1.05);
+}
+
+.nav-bar .search-location {
+  justify-self: flex-end;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+  text-align: end;
 }
 
 .content {
   align-self: center;
   justify-self: center;
 
-  display: grid;
-  grid-template: 1fr 1fr / auto;
+  display: none;
+  grid-template: auto 1fr / auto;
+  align-items: flex-start;
   gap: 1em;
   padding: 1em;
   min-width: 70%;
@@ -54,6 +115,7 @@ body {
   background-color: rgba(22, 52, 65, 0.5);
   border-radius: 1em;
   justify-content: space-around;
+  align-items: center;
 }
 
 .content .forecast-content {
@@ -64,15 +126,24 @@ body {
 
 .content .current-day-content {
   font-size: large;
+  max-height: 400px;
   .left-content {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 
     .weather-icon {
       width: 128px;
       height: 128px;
     }
+  }
+  .right-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    justify-content: center;
+    align-items: center;
   }
 }
 .content .forecast-content .forecast-card {
@@ -82,9 +153,10 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     .weather-icon {
-      width: 48px;
-      height: 48px;
+      width: 64px;
+      height: 64px;
     }
   }
 
@@ -100,4 +172,21 @@ body {
       border-radius: 1em;
     }
   }
+}
+
+.loading-page-container {
+  align-self: center;
+  justify-self: center;
+  display: none;
+}
+
+.error-page-container {
+  align-self: center;
+  justify-self: center;
+  display: none;
+}
+
+.error-page-container .error-text {
+  font-size: large;
+  font-weight: 700;
 }

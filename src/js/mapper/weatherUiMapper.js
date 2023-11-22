@@ -9,15 +9,62 @@ const uiState = {
   CONTENT: "CONTENT",
   ERROR: "ERROR",
 };
-const currentUiState = uiState.CONTENT;
 
-export function fetchAndMapData(searchQuery) {
+let prevQuery = "";
+
+export function initialize(query) {
+  setupSearchListener();
+  fetchAndMapData(query);
+}
+
+function updateUiState(newState, errorText = null) {
+  const currentUiState = newState;
+
+  const contentGridContainer = document.querySelector(".content");
+  const loadingFlexContainer = document.querySelector(
+    ".loading-page-container"
+  );
+  const errorFlexContainer = document.querySelector(".error-page-container");
+  switch (currentUiState) {
+    case uiState.CONTENT: {
+      contentGridContainer.style.display = "grid";
+      loadingFlexContainer.style.display = "none";
+      errorFlexContainer.style.display = "none";
+      break;
+    }
+    case uiState.LOADING: {
+      contentGridContainer.style.display = "none";
+      loadingFlexContainer.style.display = "flex";
+      errorFlexContainer.style.display = "none";
+      break;
+    }
+    case uiState.ERROR: {
+      contentGridContainer.style.display = "none";
+      loadingFlexContainer.style.display = "none";
+      errorFlexContainer.style.display = "flex";
+      if (errorText != null) {
+        const errorTextElement = document.querySelector(".error-text");
+        errorTextElement.textContent = errorText;
+      }
+      break;
+    }
+  }
+}
+
+function fetchAndMapData(searchQuery) {
+  if (prevQuery === searchQuery) {
+    return;
+  }
+  updateUiState(uiState.LOADING);
+
   fetchForecast(searchQuery)
     .then((json) => {
       const uiModel = handleData(json);
 
       currentWeatherUiModelMapper(uiModel.currentWeatherUiModel);
       forecastUiModelMapper(uiModel.forecastUiModels);
+      updateUiState(uiState.CONTENT);
+      prevQuery = searchQuery;
     })
     .catch((error) => {
       errorMapper(error);
@@ -26,6 +73,27 @@ export function fetchAndMapData(searchQuery) {
 
 function errorMapper(error) {
   console.log(error);
+  updateUiState(uiState.ERROR, error);
+}
+
+function setupSearchListener() {
+  const searchBar = document.getElementById("city-name-search");
+  const searchIcon = document.querySelector(".search-icon");
+  searchBar.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  });
+  searchIcon.addEventListener("click", (e) => {
+    handleSearch();
+  });
+}
+
+function handleSearch() {
+  const searchBar = document.getElementById("city-name-search");
+  if (searchBar.value != undefined && searchBar.value.length > 0) {
+    fetchAndMapData(searchBar.value);
+  }
 }
 
 /**
@@ -48,14 +116,14 @@ function currentWeatherUiModelMapper(currentWeatherUiModel) {
   const windSpeed = document.querySelector(".current-day-content .wind-speed");
   const date = document.querySelector(".current-day-content .date");
 
-  location.textContent = currentWeatherUiModel.location;
+  location.textContent = `Current location: ${currentWeatherUiModel.location}`;
   iconImg.src = currentWeatherUiModel.iconUrl;
   text.textContent = currentWeatherUiModel.weatherText;
-  tempCelcius.textContent = currentWeatherUiModel.getCelciusText();
-  tempFahrenheit.textContent = currentWeatherUiModel.getFahrenheitText();
-  cloud.textContent = currentWeatherUiModel.getCloudText();
-  humidity.textContent = currentWeatherUiModel.getHumidityText();
-  windSpeed.textContent = currentWeatherUiModel.getWindSpeedText();
+  tempCelcius.textContent = `Temperature(C): ${currentWeatherUiModel.getCelciusText()}`;
+  tempFahrenheit.textContent = `Temperature(F): ${currentWeatherUiModel.getFahrenheitText()}`;
+  cloud.textContent = `Cloud density(percent): ${currentWeatherUiModel.getCloudText()}`;
+  humidity.textContent = `Humidity(percent): ${currentWeatherUiModel.getHumidityText()}`;
+  windSpeed.textContent = `Wind Speed (Kilometer/Hour): ${currentWeatherUiModel.getWindSpeedText()}`;
   date.textContent = currentWeatherUiModel.date;
 }
 
@@ -91,11 +159,11 @@ function forecastUiModelMapper(uiModels) {
 
     const avgTempCelcius = document.createElement("div");
     avgTempCelcius.classList.toggle("temp-celcius");
-    avgTempCelcius.textContent = model.getCelciusText();
+    avgTempCelcius.textContent = `Temperature(C): ${model.getCelciusText()}`;
 
     const avgTempFahrenheit = document.createElement("div");
     avgTempFahrenheit.classList.toggle("temp-fahrenheit");
-    avgTempFahrenheit.textContent = model.getFahrenheitText();
+    avgTempFahrenheit.textContent = `Temperature(F): ${model.getFahrenheitText()}`;
 
     const date = document.createElement("div");
     date.classList.toggle("date");
