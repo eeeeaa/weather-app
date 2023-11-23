@@ -4,6 +4,7 @@ export class ForecastCardUiModel {
     weatherText,
     avgTempCelcius,
     avgTempFahrenheit,
+    weekday,
     date,
     tempHours,
   }) {
@@ -11,6 +12,7 @@ export class ForecastCardUiModel {
     this.weatherText = weatherText;
     this.avgTempCelcius = avgTempCelcius;
     this.avgTempFahrenheit = avgTempFahrenheit;
+    this.weekday = weekday;
     this.date = date;
     this.tempHours = tempHours;
   }

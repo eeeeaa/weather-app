@@ -1,3 +1,5 @@
+import { WeatherApiError } from "./model/errorModel";
+
 const baseUrl = "https://api.weatherapi.com/v1";
 const key = process.env.API_KEY;
 
@@ -11,7 +13,10 @@ export async function fetchForecast(cityName) {
   let json = await response.json();
 
   if (!response.ok) {
-    throw new Error(json.error.message);
+    throw new WeatherApiError({
+      code: json.error.code,
+      message: json.error.message,
+    });
   }
 
   console.log(json);

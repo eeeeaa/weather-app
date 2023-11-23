@@ -35,7 +35,8 @@ function handleForecastData(jsonData) {
         weatherText: forecast.day.condition.text,
         avgTempCelcius: forecast.day.avgtemp_c,
         avgTempFahrenheit: forecast.day.avgtemp_f,
-        date: handleForecastDate(forecast.date),
+        date: handleForecastDate(forecast.date).mainDate,
+        weekday: handleForecastDate(forecast.date).weekday,
         tempHours: tempHours,
       })
     );
@@ -54,13 +55,19 @@ function handleCurrentDate(date) {
 }
 
 function handleForecastDate(date) {
-  const newDate = new Date(date).toLocaleString("default", {
+  const newDate = new Date(date);
+  const weekday = newDate.toLocaleString("default", {
     weekday: "long",
+  });
+  const mainDate = newDate.toLocaleString("default", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
-  return `Date: ${newDate}`;
+  return {
+    weekday,
+    mainDate,
+  };
 }
 
 function getTempHours(hours) {

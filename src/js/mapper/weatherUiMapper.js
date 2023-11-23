@@ -72,8 +72,16 @@ function fetchAndMapData(searchQuery) {
 }
 
 function errorMapper(error) {
-  console.log(error);
-  updateUiState(uiState.ERROR, error);
+  console.log(`${error.code}, ${error.message}`);
+
+  switch (error.code) {
+    case 1006: {
+      prevQuery = "";
+      break;
+    }
+  }
+
+  updateUiState(uiState.ERROR, error.message);
 }
 
 function setupSearchListener() {
@@ -207,21 +215,28 @@ function forecastUiModelMapper(uiModels) {
     const rightSide = document.createElement("div");
     rightSide.classList.toggle("right-content");
 
-    const avgTempCelcius = document.createElement("div");
-    avgTempCelcius.classList.toggle("temp-celcius");
-    avgTempCelcius.textContent = `Temperature(C): ${model.getCelciusText()}`;
+    const rightSideTop = document.createElement("div");
+    rightSideTop.classList.toggle("right-side-top-content");
 
-    const avgTempFahrenheit = document.createElement("div");
-    avgTempFahrenheit.classList.toggle("temp-fahrenheit");
-    avgTempFahrenheit.textContent = `Temperature(F): ${model.getFahrenheitText()}`;
+    const tempCelCard = createDataCard(
+      model.getCelciusText(),
+      "Avg temperature(C)",
+      "temp-celcius"
+    );
 
-    const date = document.createElement("div");
-    date.classList.toggle("date");
-    date.textContent = model.date;
+    const tempFahCard = createDataCard(
+      model.getCelciusText(),
+      "Avg temperature(F)",
+      "temp-fahrenheit"
+    );
+
+    const dateCard = createDataCard(model.weekday, model.date, "date");
 
     const graph = createLineGraph(model.tempHours);
 
-    rightSide.append(avgTempCelcius, avgTempFahrenheit, date, graph);
+    rightSideTop.append(tempCelCard, tempFahCard, dateCard);
+
+    rightSide.append(rightSideTop, graph);
 
     card.append(leftSide, rightSide);
     content.append(card);
@@ -250,11 +265,14 @@ function createLineGraph(hours) {
     labels: labels,
     datasets: [
       {
-        label: "Temperature in Celcius",
+        label: "Temperature in Celcius by hour",
         data: tempList,
-        fill: false,
-        borderColor: "rgb(75, 192, 192)",
+        fill: true,
+        backgroundColor: "rgba(52,211,153,1)",
+        borderColor: "rgba(52,211,153,1)",
+        borderWidth: 1,
         tension: 0.1,
+        pointStyle: "cross",
       },
     ],
   };
@@ -266,8 +284,23 @@ function createLineGraph(hours) {
       responsive: false,
       maintainAspectRatio: false,
       plugins: {
+        colors: {
+          forceOverride: true,
+        },
         legend: {
           labels: {
+            color: "white",
+          },
+        },
+      },
+      scales: {
+        y: {
+          ticks: {
+            color: "white",
+          },
+        },
+        x: {
+          ticks: {
             color: "white",
           },
         },
